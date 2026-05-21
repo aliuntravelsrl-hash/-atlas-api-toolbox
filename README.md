@@ -14,6 +14,7 @@
 | [WhatsApp Business API v23.0](01-meta/whatsapp-business-api-v23.0/GTI-WHATSAPP-BUSINESS-API-v23.0.md) | 113 endpoints, 369 schemas | — | ✅ Completo | 🔴 Crítica |
 | [Marketing API (MAPI)](01-meta/marketing-api/GTI-META-MARKETING-API.md) | 995 JSON specs, 47 Postman | 89KB, 10 folders | ✅ Completo | 🔴 Crítica |
 | [Conversions API (CAPI) + Pixel](01-meta/conversions-api/GTI-META-CONVERSIONS-API.md) | CAPI SDK + Param Builder | — | ✅ Completo | 🟡 Alta |
+| [Conversion Leads CRM](01-meta/conversions-api/GTI-META-CONVERSION-LEADS-CRM.md) | Meta CAPI payload specs para CRM | — | ✅ Completo | 🔴 Crítica |
 | ~~Instagram Graph API~~ | — | — | 🔲 Pendiente | 🟡 Media |
 | ~~Messenger API~~ | — | — | 🔲 Pendiente | 🟢 Baja |
 
@@ -39,7 +40,14 @@
 atlas-api-toolbox/
 ├── README.md                              ← ESTE ARCHIVO
 ├── sql/                                   
-│   └── crm-v1.0-migration.sql             ← CRM ALIUN (3 tablas + 1 RPC)
+│   ├── crm-v1.0-migration.sql             ← CRM ALIUN v1.0 (3 tablas + 1 RPC)
+│   └── crm-v1.1-migration.sql             ← CRM ALIUN v1.1 (nueva tabla capi_logs + CAPI RPC)
+│
+├── n8n/
+│   └── conversion-leads-crm-to-meta.json  ← Workflow n8n de automatización CRM -> Meta
+│
+├── deploy/
+│   └── PROMPT-ANTIGRAVITY-CRM-CAPI-DEPLOY.md ← Prompt de despliegue paso a paso
 │
 ├── 01-meta/
 │   ├── whatsapp-business-api-v23.0/
@@ -51,7 +59,8 @@ atlas-api-toolbox/
 │   │   ├── SDKCodegen.json                        ← SDK config
 │   │   └── specs/                                 ← 12 JSON specs clave
 │   ├── conversions-api/
-│   │   └── GTI-META-CONVERSIONS-API.md           ← CAPI + Pixel + Conversion Leads
+│   │   ├── GTI-META-CONVERSIONS-API.md           ← CAPI + Pixel + Conversion Leads
+│   │   └── GTI-META-CONVERSION-LEADS-CRM.md      ← Conversion Leads CRM (Especificación CAPI)
 │   ├── pixel-gtm/
 │   │   └── README-Pixel-GTM.md                   ← GTM Template reference
 │   └── conversion-leads/
@@ -97,4 +106,4 @@ atlas-api-toolbox/
 
 ---
 
-*Última actualización: 21 MAY 2026 · Hermes Agent · ATLAS-HERMES*
+*Última actualización: 21 MAY 2026 · Antigravity Agent · ATLAS-API-TOOLBOX-INTEGRATION*
