@@ -1,0 +1,356 @@
+{
+  "name": "ALIUN — Conversion Leads (CRM → Meta CAPI)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aliun-crm-stage-update",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook: CRM Stage Update",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "notes": "Recibe POST de Supabase webhook cuando crm_leads.stage cambia"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-meta-lead-id",
+              "leftValue": "={{ $json.body.record.meta_lead_id }}",
+              "rightValue": "",
+              "operator": "n8n-nodes-base.compareOperation:notEmpty",
+              "displayName": "Tiene Meta Lead ID"
+            },
+            {
+              "id": "stage-is-relevant",
+              "leftValue": "={{ $json.body.record.stage }}",
+              "rightValue": "cerrado_perdido",
+              "operator": "n8n-nodes-base.compareOperation:notEquals",
+              "displayName": "No es cerrado_perdido"
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "filter-relevant",
+      "name": "Filtro: Lead con Meta ID + stage relevante",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 0],
+      "notes": "Solo procesar leads con meta_lead_id y stage != cerrado_perdido"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "output": 0,
+              "displayName": "Initial Lead",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.body.record.stage }}",
+                  "rightValue": "nuevo",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ]
+            },
+            {
+              "output": 1,
+              "displayName": "MQL",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.body.record.stage }}",
+                  "rightValue": "contactado",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ]
+            },
+            {
+              "output": 2,
+              "displayName": "Sales Opportunity",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.body.record.stage }}",
+                  "rightValue": "cotizado",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ]
+            },
+            {
+              "output": 3,
+              "displayName": "Sales Opportunity (negociando)",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.body.record.stage }}",
+                  "rightValue": "negociando",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ]
+            },
+            {
+              "output": 4,
+              "displayName": "Converted!",
+              "conditions": [
+                {
+                  "leftValue": "={{ $json.body.record.stage }}",
+                  "rightValue": "cerrado_ganado",
+                  "operator": {
+                    "type": "string",
+                    "operation": "equals"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "id": "switch-stage",
+      "name": "Switch: CRM Stage → Meta event_name",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [440, 0],
+      "notes": "nuevo→Initial Lead | contactado→MQL | cotizado/negociando→Sales Opp | cerrado_ganado→Converted"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event_name",
+              "value": "={{ $json.output }}",
+              "displayName": "event_name"
+            }
+          ],
+          "number": [
+            {
+              "name": "event_time",
+              "value": "={{ Math.floor(Date.now() / 1000) }}",
+              "displayName": "event_time (Unix)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "build-payload",
+      "name": "Construir Payload CAPI",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [660, 0],
+      "notes": "Arma el JSON que se enviará a Meta"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.META_CAPI_ENDPOINT }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer={{ $env.META_ACCESS_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": [\n    {\n      \"event_name\": \"{{ $json.event_name }}\",\n      \"event_time\": {{ $json.event_time }},\n      \"user_data\": {\n        \"lead_id\": \"{{ $('Webhook: CRM Stage Update').item.json.body.record.meta_lead_id }}\"\n      },\n      \"action_source\": \"system_generated\",\n      \"custom_data\": {\n        \"lead_event_source\": \"ALIUN CRM\",\n        \"event_source\": \"crm\"\n      }\n    }\n  ]\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "send-to-meta",
+      "name": "POST Meta CAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0],
+      "notes": "Envía evento a graph.facebook.com/v23.0/{pixel_id}/events"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "tableId": "crm_capi_logs",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "lead_id",
+              "fieldValue": "={{ $('Webhook: CRM Stage Update').item.json.body.record.id }}"
+            },
+            {
+              "fieldId": "meta_lead_id",
+              "fieldValue": "={{ $('Webhook: CRM Stage Update').item.json.body.record.meta_lead_id }}"
+            },
+            {
+              "fieldId": "event_name",
+              "fieldValue": "={{ $('Construir Payload CAPI').item.json.event_name }}"
+            },
+            {
+              "fieldId": "stage_crm",
+              "fieldValue": "={{ $('Webhook: CRM Stage Update').item.json.body.record.stage }}"
+            },
+            {
+              "fieldId": "payload_sent",
+              "fieldValue": "={{ JSON.stringify($('POST Meta CAPI').item.json) }}"
+            },
+            {
+              "fieldId": "meta_response",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "sent"
+            }
+          ]
+        }
+      },
+      "id": "log-capi",
+      "name": "Log en crm_capi_logs",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1100, 0],
+      "notes": "Auditoría: qué se envió, qué respondió Meta"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok', event: $('Construir Payload CAPI').item.json.event_name, lead_id: $('Webhook: CRM Stage Update').item.json.body.record.meta_lead_id }) }}",
+        "options": {}
+      },
+      "id": "respond-ok",
+      "name": "Response: OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1320, 0]
+    }
+  ],
+  "connections": {
+    "Webhook: CRM Stage Update": {
+      "main": [
+        [
+          {
+            "node": "Filtro: Lead con Meta ID + stage relevante",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro: Lead con Meta ID + stage relevante": {
+      "main": [
+        [
+          {
+            "node": "Switch: CRM Stage → Meta event_name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch: CRM Stage → Meta event_name": {
+      "main": [
+        [
+          {
+            "node": "Construir Payload CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Construir Payload CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Construir Payload CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Construir Payload CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Construir Payload CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Payload CAPI": {
+      "main": [
+        [
+          {
+            "node": "POST Meta CAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST Meta CAPI": {
+      "main": [
+        [
+          {
+            "node": "Log en crm_capi_logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log en crm_capi_logs": {
+      "main": [
+        [
+          {
+            "node": "Response: OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    { "name": "aliun" },
+    { "name": "conversion-leads" },
+    { "name": "meta-capi" },
+    { "name": "crm" }
+  ]
+}
