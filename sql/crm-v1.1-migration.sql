@@ -207,9 +207,60 @@ CREATE POLICY "crm_deals_anon_full" ON public.crm_deals
 CREATE POLICY "crm_capi_logs_anon_full" ON public.crm_capi_logs
   FOR ALL USING (true) WITH CHECK (true);
 
+-- ─── PROTECCIÓN HIJAS: INSERT ONLY (Patrón Madre→Hijas) ────────
+-- Las tablas hijas son APPEND-ONLY. No se permite UPDATE ni DELETE.
+-- Esto garantiza auditabilidad completa del timeline de cada lead.
+
+CREATE OR REPLACE FUNCTION public.enforce_insert_only()
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE EXCEPTION 'Tabla hija (append-only): operación % no permitida. Solo INSERT.', TG_OP;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Proteger crm_activities (hija de crm_leads)
+CREATE TRIGGER trg_crm_activities_no_update
+  BEFORE UPDATE ON public.crm_activities
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_insert_only();
+
+CREATE TRIGGER trg_crm_activities_no_delete
+  BEFORE DELETE ON public.crm_activities
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_insert_only();
+
+-- Proteger crm_capi_logs (hija de crm_leads — auditoría Meta)
+CREATE TRIGGER trg_crm_capi_logs_no_update
+  BEFORE UPDATE ON public.crm_capi_logs
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_insert_only();
+
+CREATE TRIGGER trg_crm_capi_logs_no_delete
+  BEFORE DELETE ON public.crm_capi_logs
+  FOR EACH ROW EXECUTE FUNCTION public.enforce_insert_only();
+
+-- Nota: crm_deals permite UPDATE (deal_status puede cambiar: pendiente→aprobada→confirmada)
+-- crm_deals NO es append-only estricto porque el deal evoluciona de status
+
+-- ─── AUTO-APPEND: Pipeline Change Activity ─────────────────────
+-- Cuando crm_leads.stage cambia, automáticamente inserta una activity hija
+CREATE OR REPLACE FUNCTION public.log_pipeline_change()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF OLD.stage IS DISTINCT FROM NEW.stage THEN
+    INSERT INTO public.crm_activities (lead_id, type, content, created_by)
+    VALUES (NEW.id, 'pipeline_change', NEW.stage, 'sistema');
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_crm_leads_pipeline_log
+  AFTER UPDATE ON public.crm_leads
+  FOR EACH ROW
+  EXECUTE FUNCTION public.log_pipeline_change();
+
 -- ─── Recargar schema cache ─────────────────────────────────────
 NOTIFY pgrst, 'reload schema';
 
 -- ═══════════════════════════════════════════════════════════════════
--- FIN MIGRATION v1.1 — Conversion Leads Ready
+-- FIN MIGRATION v1.1 — Patrón Madre→Hijas + Conversion Leads
 -- ═══════════════════════════════════════════════════════════════════
