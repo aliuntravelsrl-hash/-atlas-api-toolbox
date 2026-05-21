@@ -180,3 +180,18 @@ NOTIFY pgrst, 'reload schema';
 -- ═══════════════════════════════════════════════════════════════════
 -- FIN MIGRATION v1.0
 -- ═══════════════════════════════════════════════════════════════════
+
+-- ═══════════════════════════════════════════════════════════════════
+-- EXTENSIÓN: Conversion Leads API — Campo meta_lead_id
+-- Requerido para enviar stage updates a Meta y optimizar campañas
+-- ═══════════════════════════════════════════════════════════════════
+
+ALTER TABLE crm_leads 
+ADD COLUMN IF NOT EXISTS meta_lead_id VARCHAR(20);
+
+COMMENT ON COLUMN crm_leads.meta_lead_id IS 
+'Meta Lead ID (15-17 dígitos) del leadgen_id en webhook de Lead Ads. Requerido para Conversion Leads API.';
+
+-- Index para buscar leads por meta_lead_id
+CREATE INDEX IF NOT EXISTS idx_crm_leads_meta_lead_id ON crm_leads(meta_lead_id);
+
