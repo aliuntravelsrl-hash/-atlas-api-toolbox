@@ -1,310 +1,310 @@
- 1| 1|<!DOCTYPE html>
- 2| 2|<html lang="es">
- 3| 3|<head>
- 4| 4| <meta charset="UTF-8">
- 5| 5| <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 6| 6| <title>ALIUN Travel · Asistente de Viajes por WhatsApp</title>
- 7| 7| <link rel="preconnect" href="https://fonts.googleapis.com">
- 8| 8| <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- 9| 9| <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
- 10| 10| <style>
- 11| 11| *{margin:0;padding:0;box-sizing:border-box}
- 12| 12| body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e2e8f0;overflow-x:hidden}
- 13| 13| .gradient-text{background:linear-gradient(135deg,#06b6d4,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
- 14| 14| .container{max-width:1200px;margin:0 auto;padding:0 24px}
- 15| 15| nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)}
- 16| 16| .nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
- 17| 17| .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#e2e8f0}
- 18| 18| .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#06b6d4,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff}
- 19| 19| .logo-text{font-size:20px;font-weight:700}
- 20| 20| .nav-links{display:flex;gap:32px;align-items:center}
- 21| 21| .nav-links a{color:#94a3b8;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
- 22| 22| .nav-links a:hover{color:#e2e8f0}
- 23| 23| .hero{padding:140px 0 80px;position:relative}
- 24| 24| .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(circle,rgba(59,130,246,0.15),transparent 70%);pointer-events:none}
- 25| 25| .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
- 26| 26| .hero h1{font-size:48px;font-weight:800;line-height:1.1;margin-bottom:20px}
- 27| 27| .hero p{font-size:18px;color:#94a3b8;line-height:1.7;margin-bottom:32px}
- 28| 28| .hero-buttons{display:flex;gap:16px;margin-bottom:40px}
- 29| 29| .btn-primary{background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;padding:14px 32px;border-radius:12px;font-weight:600;font-size:16px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s,box-shadow 0.2s}
- 30| 30| .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,0.4)}
- 31| 31| .btn-secondary{background:rgba(255,255,255,0.05);color:#e2e8f0;padding:14px 32px;border-radius:12px;font-weight:600;font-size:16px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s}
- 32| 32| .btn-secondary:hover{background:rgba(255,255,255,0.1)}
- 33| 33| .stats{display:flex;gap:40px}
- 34| 34| .stat{text-align:left}
- 35| 35| .stat-value{font-size:32px;font-weight:800}
- 36| 36| .stat-label{font-size:14px;color:#94a3b8;margin-top:4px}
- 37| 37| .hero-visual{position:relative;display:flex;justify-content:center}
- 38| 38| .phone-mockup{width:280px;height:560px;background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:40px;padding:12px;box-shadow:0 25px 80px rgba(0,0,0,0.5);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
- 39| 39| .phone-screen{width:100%;height:100%;background:#0f172a;border-radius:30px;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:12px}
- 40| 40| .chat-header{background:linear-gradient(135deg,#06b6d4,#3b82f6);padding:12px 16px;border-radius:12px;display:flex;align-items:center;gap:10px}
- 41| 41| .chat-avatar{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
- 42| 42| .chat-name{color:#fff;font-size:14px;font-weight:600}
- 43| 43| .chat-status{color:rgba(255,255,255,0.7);font-size:11px}
- 44| 44| .msg{padding:10px 14px;border-radius:12px;max-width:85%;font-size:13px;line-height:1.4}
- 45| 45| .msg-user{background:rgba(59,130,246,0.2);color:#93c5fd;align-self:flex-end;border-bottom-right-radius:4px}
- 46| 46| .msg-bot{background:rgba(255,255,255,0.05);color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:4px}
- 47| 47| section{padding:80px 0}
- 48| 48| .section-title{font-size:36px;font-weight:800;margin-bottom:12px}
- 49| 49| .section-subtitle{color:#94a3b8;font-size:18px;margin-bottom:48px;max-width:600px}
- 50| 50| .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
- 51| 51| .feature-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;transition:all 0.3s}
- 52| 52| .feature-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(59,130,246,0.3);transform:translateY(-4px)}
- 53| 53| .feature-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(59,130,246,0.2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
- 54| 54| .feature-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
- 55| 55| .feature-card p{color:#94a3b8;font-size:14px;line-height:1.6}
- 56| 56| .whatsapp-section{background:linear-gradient(180deg,rgba(6,182,212,0.05),transparent);border-top:1px solid rgba(6,182,212,0.1);border-bottom:1px solid rgba(6,182,212,0.1)}
- 57| 57| .wa-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
- 58| 58| .wa-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
- 59| 59| .wa-feature{padding:24px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
- 60| 60| .wa-feature h4{font-size:15px;font-weight:600;margin-bottom:6px}
- 61| 61| .wa-feature p{font-size:13px;color:#94a3b8}
- 62| 62| .wa-compliance{margin-top:32px;padding:24px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:12px;display:flex;gap:16px;align-items:flex-start}
- 63| 63| .wa-compliance .icon{font-size:24px}
- 64| 64| .wa-compliance h4{font-size:15px;font-weight:600;color:#22c55e;margin-bottom:4px}
- 65| 65| .wa-compliance p{font-size:13px;color:#94a3b8;line-height:1.5}
- 66| 66| .meta-badges{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
- 67| 67| .meta-badge{padding:32px;background:rgba(255,255,255,0.03);border-radius:16px;border:1px solid rgba(255,255,255,0.06)}
- 68| 68| .meta-badge h4{font-size:16px;font-weight:700;margin-bottom:16px}
- 69| 69| .meta-badge ul{list-style:none;display:flex;flex-direction:column;gap:10px}
- 70| 70| .meta-badge li{display:flex;align-items:center;gap:10px;font-size:14px;color:#94a3b8}
- 71| 71| .check{color:#22c55e;font-weight:700}
- 72| 72| .cta-section{text-align:center;padding:100px 0}
- 73| 73| .cta-section h2{font-size:36px;font-weight:800;margin-bottom:16px}
- 74| 74| .cta-section p{color:#94a3b8;font-size:18px;margin-bottom:32px;max-width:600px;margin-left:auto;margin-right:auto}
- 75| 75| .cta-buttons{display:flex;gap:16px;justify-content:center}
- 76| 76| footer{border-top:1px solid rgba(255,255,255,0.05);padding:48px 0}
- 77| 77| .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
- 78| 78| .footer-brand p{color:#94a3b8;font-size:14px;margin-top:12px;line-height:1.6;max-width:280px}
- 79| 79| .footer-col h4{font-size:14px;font-weight:600;margin-bottom:16px}
- 80| 80| .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
- 81| 81| .footer-col a{color:#94a3b8;text-decoration:none;font-size:14px;transition:color 0.2s}
- 82| 82| .footer-col a:hover{color:#e2e8f0}
- 83| 83| .footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center}
- 84| 84| .footer-bottom p{color:#64748b;font-size:13px}
- 85| 85| .footer-social{display:flex;gap:16px}
- 86| 86| .footer-social a{color:#64748b;text-decoration:none;font-size:13px}
- 87| 87| @media(max-width:768px){.hero-grid{grid-template-columns:1fr}.hero h1{font-size:32px}.features-grid{grid-template-columns:1fr}.wa-grid{grid-template-columns:1fr}.wa-features{grid-template-columns:1fr}.meta-badges{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.hero-visual{display:none}.stats{flex-wrap:wrap}}
- 88| 88| </style>
- 89| 89|</head>
- 90| 90|<body>
- 91| 91| <nav>
- 92| 92| <div class="nav-inner">
- 93| 93| <a href="/" class="logo">
- 94| 94| <div class="logo-icon">A</div>
- 95| 95| <div class="logo-text">ALIUN Travel</div>
- 96| 96| </a>
- 97| 97| <div class="nav-links">
- 98| 98| <a href="#features">Servicios</a>
- 99| 99| <a href="#whatsapp">WhatsApp API</a>
- 100| 100| <a href="/privacy">Privacidad</a>
- 101| 101| <a href="/terms">Términos</a>
- 102| 102| <a href="#contact">Contacto</a>
- 103| 103| </div>
- 104| 104| </div>
- 105| 105| </nav>
- 106| 106|
- 107| 107| <section class="hero">
- 108| 108| <div class="container">
- 109| 109| <div class="hero-grid">
- 110| 110| <div>
- 111| 111| <h1>Tu Agencia de Viajes en <span class="gradient-text">WhatsApp</span></h1>
- 112| 112| <p>ALIUN Travel integra WhatsApp Cloud API de Meta para ofrecerte cotizaciones instantáneas, gestión de reservas y soporte 24/7 directamente desde tu WhatsApp. Viajes sin fricción.</p>
- 113| 113| <div class="hero-buttons">
- 114| 114| <a href="https://wa.me/18495833500" class="btn-primary" target="_blank">💬 Chatea Ahora</a>
- 115| 115| <a href="#features" class="btn-secondary">Nuestros Servicios</a>
- 116| 116| </div>
- 117| 117| <div class="stats">
- 118| 118| <div class="stat">
- 119| 119| <div class="stat-value gradient-text">6+</div>
- 120| 120| <div class="stat-label">Destinos RD</div>
- 121| 121| </div>
- 122| 122| <div class="stat">
- 123| 123| <div class="stat-value gradient-text">24/7</div>
- 124| 124| <div class="stat-label">Soporte</div>
- 125| 125| </div>
- 126| 126| <div class="stat">
- 127| 127| <div class="stat-value gradient-text">99.9%</div>
- 128| 128| <div class="stat-label">Disponibilidad</div>
- 129| 129| </div>
- 130| 130| </div>
- 131| 131| </div>
- 132| 132| <div class="hero-visual">
- 133| 133| <div class="phone-mockup">
- 134| 134| <div class="phone-screen">
- 135| 135| <div class="chat-header">
- 136| 136| <div class="chat-avatar">✈️</div>
- 137| 137| <div>
- 138| 138| <div class="chat-name">ALIUN Travel</div>
- 139| 139| <div class="chat-status">En línea</div>
- 140| 140| </div>
- 141| 141| </div>
- 142| 142| <div class="msg msg-user">Hola, necesito cotización para Punta Cana 3 noches</div>
- 143| 143| <div class="msg msg-bot">¡Hola! 🏖️ Tenemos paquetes desde USD 299 por persona para Punta Cana. ¿Fecha de viaje?</div>
- 144| 144| <div class="msg msg-user">15-18 junio, 2 personas</div>
- 145| 145| <div class="msg msg-bot">¡Perfecto! Te preparo la cotización. Incluye: ✈️ Vuelo + 🏨 Hotel 4★ + 🚐 Traslado. ¿Te envío el PDF?</div>
- 146| 146| <div class="msg msg-user">Sí, por favor</div>
- 147| 147| <div class="msg msg-bot">📎 Cotización_PuntaCana_Jun2026.pdf<br>💡 También puedes verla aquí: aliuntravelsrl.com/cotizacion/abc123</div>
- 148| 148| </div>
- 149| 149| </div>
- 150| 150| </div>
- 151| 151| </div>
- 152| 152| </div>
- 153| 153| </section>
- 154| 154|
- 155| 155| <section id="features">
- 156| 156| <div class="container">
- 157| 157| <h2 class="section-title">Servicios de Viaje <span class="gradient-text">Integrados</span></h2>
- 158| 158| <p class="section-subtitle">Todo lo que necesitas para tu viaje, gestionado desde WhatsApp con respaldo de nuestro equipo experto.</p>
- 159| 159| <div class="features-grid">
- 160| 160| <div class="feature-card">
- 161| 161| <div class="feature-icon">📋</div>
- 162| 162| <h3>Cotizaciones Instantáneas</h3>
- 163| 163| <p>Recibe cotizaciones en PDF con landing page personalizada. Destinos, paquetes y excursiones en segundos.</p>
- 164| 164| </div>
- 165| 165| <div class="feature-card">
- 166| 166| <div class="feature-icon">🏨</div>
- 167| 167| <h3>Reservas Confirmadas</h3>
- 168| 168| <p>Confirma tu reserva directamente por WhatsApp. Recibe voucher electrónico y todos los detalles del viaje.</p>
- 169| 169| </div>
- 170| 170| <div class="feature-card">
- 171| 171| <div class="feature-icon">💳</div>
- 172| 172| <h3>Pagos Seguros</h3>
- 173| 173| <p>Comprobante de depósito vía WhatsApp. Confirmación automática y recibo digital al instante.</p>
- 174| 174| </div>
- 175| 175| <div class="feature-card">
- 176| 176| <div class="feature-icon">🎫</div>
- 177| 177| <h3>Voucher Electrónico</h3>
- 178| 178| <p>Recibe tu voucher de viaje en PDF con código QR. Sin papel, sin espera, directo a tu teléfono.</p>
- 179| 179| </div>
- 180| 180| <div class="feature-card">
- 181| 181| <div class="feature-icon">🌍</div>
- 182| 182| <h3>Destinos Nacionales e Internacionales</h3>
- 183| 183| <p>Punta Cana, Samaná, Puerto Plata y más. También paquetes internacionales a medida.</p>
- 184| 184| </div>
- 185| 185| <div class="feature-card">
- 186| 186| <div class="feature-icon">🛡️</div>
- 187| 187| <h3>Soporte 24/7</h3>
- 188| 188| <p>Asistencia antes, durante y después de tu viaje. Bot inteligente + equipo humano cuando lo necesites.</p>
- 189| 189| </div>
- 190| 190| </div>
- 191| 191| </div>
- 192| 192| </section>
- 193| 193|
- 194| 194| <section id="whatsapp" class="whatsapp-section">
- 195| 195| <div class="container">
- 196| 196| <div class="wa-grid">
- 197| 197| <div>
- 198| 198| <h2 class="section-title">Integración Oficial con <span class="gradient-text">WhatsApp Cloud API</span></h2>
- 199| 199| <p class="section-subtitle">Cumplimos todos los requisitos de Meta para aplicaciones de WhatsApp Business. Seguridad, escalabilidad y conformidad garantizadas.</p>
- 200| 200| <div class="wa-features">
- 201| 201| <div class="wa-feature">
- 202| 202| <h4>☁️ WhatsApp Cloud API</h4>
- 203| 203| <p>Conexión directa con la infraestructura de Meta</p>
- 204| 204| </div>
- 205| 205| <div class="wa-feature">
- 206| 206| <h4>⚡ Respuesta Instantánea</h4>
- 207| 207| <p>Cotizaciones y confirmaciones en segundos</p>
- 208| 208| </div>
- 209| 209| <div class="wa-feature">
- 210| 210| <h4>📊 Panel de Control</h4>
- 211| 211| <p>Métricas de atención y rendimiento en tiempo real</p>
- 212| 212| </div>
- 213| 213| <div class="wa-feature">
- 214| 214| <h4>🔐 Seguridad Enterprise</h4>
- 215| 215| <p>Encriptación y cumplimiento normativo</p>
- 216| 216| </div>
- 217| 217| </div>
- 218| 218| <div class="wa-compliance">
- 219| 219| <div class="icon">✅</div>
- 220| 220| <div>
- 221| 221| <h4>Cumplimiento Meta Completo</h4>
- 222| 222| <p>ALIUN Travel cumple con todos los requisitos de Meta para aplicaciones que utilizan WhatsApp Cloud API, incluyendo políticas de privacidad, términos de servicio, y estándares de seguridad de nivel enterprise. Nuestro Business ID: 566853080395362.</p>
- 223| 223| </div>
- 224| 224| </div>
- 225| 225| </div>
- 226| 226| <div>
- 227| 227| <div class="meta-badges">
- 228| 228| <div class="meta-badge">
- 229| 229| <h4>📋 Documentación Legal</h4>
- 230| 230| <ul>
- 231| 231| <li><span class="check">✓</span> <a href="/privacy" style="color:#94a3b8;text-decoration:none">Política de Privacidad</a></li>
- 232| 232| <li><span class="check">✓</span> <a href="/terms" style="color:#94a3b8;text-decoration:none">Términos de Servicio</a></li>
- 233| 233| <li><span class="check">✓</span> Información de la Aplicación</li>
- 234| 234| <li><span class="check">✓</span> Cumplimiento de Meta</li>
- 235| 235| </ul>
- 236| 236| </div>
- 237| 237| <div class="meta-badge">
- 238| 238| <h4>📱 Perfil de Aplicación</h4>
- 239| 239| <ul>
- 240| 240| <li><span class="check">✓</span> Resolución: 1024×1024 px</li>
- 241| 241| <li><span class="check">✓</span> Formatos: JPG, PNG</li>
- 242| 242| <li><span class="check">✓</span> Máximo: 5 MB</li>
- 243| 243| <li><span class="check">✓</span> Rango: 512×512 a 1024×1024</li>
- 244| 244| </ul>
- 245| 245| </div>
- 246| 246| </div>
- 247| 247| </div>
- 248| 248| </div>
- 249| 249| </div>
- 250| 250| </section>
- 251| 251|
- 252| 252| <section id="contact" class="cta-section">
- 253| 253| <div class="container">
- 254| 254| <h2>Planifica tu Próximo <span class="gradient-text">Viaje</span></h2>
- 255| 255| <p>Escríbenos por WhatsApp y recibe tu cotización personalizada en minutos. Sin formularios, sin esperas.</p>
- 256| 256| <div class="cta-buttons">
- 257| 257| <a href="https://wa.me/18495833500" class="btn-primary" target="_blank">💬 Escribir por WhatsApp</a>
- 258| 258| <a href="https://aliuntravelsrl.com" class="btn-secondary" target="_blank">🌐 Visitar Web</a>
- 259| 259| </div>
- 260| 260| </div>
- 261| 261| </section>
- 262| 262|
- 263| 263| <footer>
- 264| 264| <div class="container">
- 265| 265| <div class="footer-grid">
- 266| 266| <div class="footer-brand">
- 267| 267| <a href="/" class="logo" style="display:inline-flex">
- 268| 268| <div class="logo-icon">A</div>
- 269| 269| <div class="logo-text">ALIUN Travel</div>
- 270| 270| </a>
- 271| 271| <p>Agencia de viajes dominicana con integración oficial de WhatsApp Cloud API de Meta. Viajes sin fricción.</p>
- 272| 272| </div>
- 273| 273| <div class="footer-col">
- 274| 274| <h4>Servicios</h4>
- 275| 275| <ul>
- 276| 276| <li><a href="#features">Cotizaciones</a></li>
- 277| 277| <li><a href="#features">Reservas</a></li>
- 278| 278| <li><a href="#features">Paquetes</a></li>
- 279| 279| <li><a href="#features">Excursiones</a></li>
- 280| 280| </ul>
- 281| 281| </div>
- 282| 282| <div class="footer-col">
- 283| 283| <h4>Legal</h4>
- 284| 284| <ul>
- 285| 285| <li><a href="/privacy">Política de Privacidad</a></li>
- 286| 286| <li><a href="/terms">Términos de Servicio</a></li>
- 287| 287| </ul>
- 288| 288| </div>
- 289| 289| <div class="footer-col">
- 290| 290| <h4>Contacto</h4>
- 291| 291| <ul>
- 292| 292| <li><a href="mailto:info@aliuntravelsrl.com">info@aliuntravelsrl.com</a></li>
- 293| 293| <li><a href="https://wa.me/18495833500">WhatsApp: 849-583-3500</a></li>
- 294| 294| <li><a href="tel:+182****8443">Tel: 829-964-8443</a></li>
- 295| 295| </ul>
- 296| 296| </ul>
- 297| 297| </div>
- 298| 298| </div>
- 299| 299| <div class="footer-bottom">
- 300| 300| <p>© 2026 ALIUN Travel SRL. Todos los derechos reservados. </p>
- 301| 301| <div class="footer-social">
- 302| 302| <a href="https://facebook.com/aliuntravelsrl">Facebook</a>
- 303| 303| <a href="https://instagram.com/aliuntravelsrl">Instagram</a>
- 304| 304| </div>
- 305| 305| </div>
- 306| 306| </div>
- 307| 307| </footer>
- 308| 308|</body>
- 309| 309|</html>
- 310| 310|
+     1| 1| 1|<!DOCTYPE html>
+     2| 2| 2|<html lang="es">
+     3| 3| 3|<head>
+     4| 4| 4| <meta charset="UTF-8">
+     5| 5| 5| <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6| 6| 6| <title>ALIUN Travel · Asistente de Viajes por WhatsApp</title>
+     7| 7| 7| <link rel="preconnect" href="https://fonts.googleapis.com">
+     8| 8| 8| <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     9| 9| 9| <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    10| 10| 10| <style>
+    11| 11| 11| *{margin:0;padding:0;box-sizing:border-box}
+    12| 12| 12| body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e2e8f0;overflow-x:hidden}
+    13| 13| 13| .gradient-text{background:linear-gradient(135deg,#06b6d4,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    14| 14| 14| .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    15| 15| 15| nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)}
+    16| 16| 16| .nav-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+    17| 17| 17| .logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#e2e8f0}
+    18| 18| 18| .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#06b6d4,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff}
+    19| 19| 19| .logo-text{font-size:20px;font-weight:700}
+    20| 20| 20| .nav-links{display:flex;gap:32px;align-items:center}
+    21| 21| 21| .nav-links a{color:#94a3b8;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+    22| 22| 22| .nav-links a:hover{color:#e2e8f0}
+    23| 23| 23| .hero{padding:140px 0 80px;position:relative}
+    24| 24| 24| .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(circle,rgba(59,130,246,0.15),transparent 70%);pointer-events:none}
+    25| 25| 25| .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    26| 26| 26| .hero h1{font-size:48px;font-weight:800;line-height:1.1;margin-bottom:20px}
+    27| 27| 27| .hero p{font-size:18px;color:#94a3b8;line-height:1.7;margin-bottom:32px}
+    28| 28| 28| .hero-buttons{display:flex;gap:16px;margin-bottom:40px}
+    29| 29| 29| .btn-primary{background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;padding:14px 32px;border-radius:12px;font-weight:600;font-size:16px;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s,box-shadow 0.2s}
+    30| 30| 30| .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,0.4)}
+    31| 31| 31| .btn-secondary{background:rgba(255,255,255,0.05);color:#e2e8f0;padding:14px 32px;border-radius:12px;font-weight:600;font-size:16px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s}
+    32| 32| 32| .btn-secondary:hover{background:rgba(255,255,255,0.1)}
+    33| 33| 33| .stats{display:flex;gap:40px}
+    34| 34| 34| .stat{text-align:left}
+    35| 35| 35| .stat-value{font-size:32px;font-weight:800}
+    36| 36| 36| .stat-label{font-size:14px;color:#94a3b8;margin-top:4px}
+    37| 37| 37| .hero-visual{position:relative;display:flex;justify-content:center}
+    38| 38| 38| .phone-mockup{width:280px;height:560px;background:linear-gradient(145deg,#1e293b,#0f172a);border-radius:40px;padding:12px;box-shadow:0 25px 80px rgba(0,0,0,0.5);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+    39| 39| 39| .phone-screen{width:100%;height:100%;background:#0f172a;border-radius:30px;overflow:hidden;padding:20px;display:flex;flex-direction:column;gap:12px}
+    40| 40| 40| .chat-header{background:linear-gradient(135deg,#06b6d4,#3b82f6);padding:12px 16px;border-radius:12px;display:flex;align-items:center;gap:10px}
+    41| 41| 41| .chat-avatar{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+    42| 42| 42| .chat-name{color:#fff;font-size:14px;font-weight:600}
+    43| 43| 43| .chat-status{color:rgba(255,255,255,0.7);font-size:11px}
+    44| 44| 44| .msg{padding:10px 14px;border-radius:12px;max-width:85%;font-size:13px;line-height:1.4}
+    45| 45| 45| .msg-user{background:rgba(59,130,246,0.2);color:#93c5fd;align-self:flex-end;border-bottom-right-radius:4px}
+    46| 46| 46| .msg-bot{background:rgba(255,255,255,0.05);color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:4px}
+    47| 47| 47| section{padding:80px 0}
+    48| 48| 48| .section-title{font-size:36px;font-weight:800;margin-bottom:12px}
+    49| 49| 49| .section-subtitle{color:#94a3b8;font-size:18px;margin-bottom:48px;max-width:600px}
+    50| 50| 50| .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    51| 51| 51| .feature-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px;transition:all 0.3s}
+    52| 52| 52| .feature-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(59,130,246,0.3);transform:translateY(-4px)}
+    53| 53| 53| .feature-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(59,130,246,0.2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+    54| 54| 54| .feature-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+    55| 55| 55| .feature-card p{color:#94a3b8;font-size:14px;line-height:1.6}
+    56| 56| 56| .whatsapp-section{background:linear-gradient(180deg,rgba(6,182,212,0.05),transparent);border-top:1px solid rgba(6,182,212,0.1);border-bottom:1px solid rgba(6,182,212,0.1)}
+    57| 57| 57| .wa-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    58| 58| 58| .wa-features{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    59| 59| 59| .wa-feature{padding:24px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+    60| 60| 60| .wa-feature h4{font-size:15px;font-weight:600;margin-bottom:6px}
+    61| 61| 61| .wa-feature p{font-size:13px;color:#94a3b8}
+    62| 62| 62| .wa-compliance{margin-top:32px;padding:24px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:12px;display:flex;gap:16px;align-items:flex-start}
+    63| 63| 63| .wa-compliance .icon{font-size:24px}
+    64| 64| 64| .wa-compliance h4{font-size:15px;font-weight:600;color:#22c55e;margin-bottom:4px}
+    65| 65| 65| .wa-compliance p{font-size:13px;color:#94a3b8;line-height:1.5}
+    66| 66| 66| .meta-badges{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+    67| 67| 67| .meta-badge{padding:32px;background:rgba(255,255,255,0.03);border-radius:16px;border:1px solid rgba(255,255,255,0.06)}
+    68| 68| 68| .meta-badge h4{font-size:16px;font-weight:700;margin-bottom:16px}
+    69| 69| 69| .meta-badge ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    70| 70| 70| .meta-badge li{display:flex;align-items:center;gap:10px;font-size:14px;color:#94a3b8}
+    71| 71| 71| .check{color:#22c55e;font-weight:700}
+    72| 72| 72| .cta-section{text-align:center;padding:100px 0}
+    73| 73| 73| .cta-section h2{font-size:36px;font-weight:800;margin-bottom:16px}
+    74| 74| 74| .cta-section p{color:#94a3b8;font-size:18px;margin-bottom:32px;max-width:600px;margin-left:auto;margin-right:auto}
+    75| 75| 75| .cta-buttons{display:flex;gap:16px;justify-content:center}
+    76| 76| 76| footer{border-top:1px solid rgba(255,255,255,0.05);padding:48px 0}
+    77| 77| 77| .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+    78| 78| 78| .footer-brand p{color:#94a3b8;font-size:14px;margin-top:12px;line-height:1.6;max-width:280px}
+    79| 79| 79| .footer-col h4{font-size:14px;font-weight:600;margin-bottom:16px}
+    80| 80| 80| .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    81| 81| 81| .footer-col a{color:#94a3b8;text-decoration:none;font-size:14px;transition:color 0.2s}
+    82| 82| 82| .footer-col a:hover{color:#e2e8f0}
+    83| 83| 83| .footer-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center}
+    84| 84| 84| .footer-bottom p{color:#64748b;font-size:13px}
+    85| 85| 85| .footer-social{display:flex;gap:16px}
+    86| 86| 86| .footer-social a{color:#64748b;text-decoration:none;font-size:13px}
+    87| 87| 87| @media(max-width:768px){.hero-grid{grid-template-columns:1fr}.hero h1{font-size:32px}.features-grid{grid-template-columns:1fr}.wa-grid{grid-template-columns:1fr}.wa-features{grid-template-columns:1fr}.meta-badges{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.hero-visual{display:none}.stats{flex-wrap:wrap}}
+    88| 88| 88| </style>
+    89| 89| 89|</head>
+    90| 90| 90|<body>
+    91| 91| 91| <nav>
+    92| 92| 92| <div class="nav-inner">
+    93| 93| 93| <a href="./" class="logo">
+    94| 94| 94| <div class="logo-icon">A</div>
+    95| 95| 95| <div class="logo-text">ALIUN Travel</div>
+    96| 96| 96| </a>
+    97| 97| 97| <div class="nav-links">
+    98| 98| 98| <a href="#features">Servicios</a>
+    99| 99| 99| <a href="#whatsapp">WhatsApp API</a>
+   100| 100| 100| <a href="./privacy.html">Privacidad</a>
+   101| 101| 101| <a href="./terms.html">Términos</a>
+   102| 102| 102| <a href="#contact">Contacto</a>
+   103| 103| 103| </div>
+   104| 104| 104| </div>
+   105| 105| 105| </nav>
+   106| 106| 106|
+   107| 107| 107| <section class="hero">
+   108| 108| 108| <div class="container">
+   109| 109| 109| <div class="hero-grid">
+   110| 110| 110| <div>
+   111| 111| 111| <h1>Tu Agencia de Viajes en <span class="gradient-text">WhatsApp</span></h1>
+   112| 112| 112| <p>ALIUN Travel integra WhatsApp Cloud API de Meta para ofrecerte cotizaciones instantáneas, gestión de reservas y soporte 24/7 directamente desde tu WhatsApp. Viajes sin fricción.</p>
+   113| 113| 113| <div class="hero-buttons">
+   114| 114| 114| <a href="https://wa.me/18495833500" class="btn-primary" target="_blank">💬 Chatea Ahora</a>
+   115| 115| 115| <a href="#features" class="btn-secondary">Nuestros Servicios</a>
+   116| 116| 116| </div>
+   117| 117| 117| <div class="stats">
+   118| 118| 118| <div class="stat">
+   119| 119| 119| <div class="stat-value gradient-text">6+</div>
+   120| 120| 120| <div class="stat-label">Destinos RD</div>
+   121| 121| 121| </div>
+   122| 122| 122| <div class="stat">
+   123| 123| 123| <div class="stat-value gradient-text">24/7</div>
+   124| 124| 124| <div class="stat-label">Soporte</div>
+   125| 125| 125| </div>
+   126| 126| 126| <div class="stat">
+   127| 127| 127| <div class="stat-value gradient-text">99.9%</div>
+   128| 128| 128| <div class="stat-label">Disponibilidad</div>
+   129| 129| 129| </div>
+   130| 130| 130| </div>
+   131| 131| 131| </div>
+   132| 132| 132| <div class="hero-visual">
+   133| 133| 133| <div class="phone-mockup">
+   134| 134| 134| <div class="phone-screen">
+   135| 135| 135| <div class="chat-header">
+   136| 136| 136| <div class="chat-avatar">✈️</div>
+   137| 137| 137| <div>
+   138| 138| 138| <div class="chat-name">ALIUN Travel</div>
+   139| 139| 139| <div class="chat-status">En línea</div>
+   140| 140| 140| </div>
+   141| 141| 141| </div>
+   142| 142| 142| <div class="msg msg-user">Hola, necesito cotización para Punta Cana 3 noches</div>
+   143| 143| 143| <div class="msg msg-bot">¡Hola! 🏖️ Tenemos paquetes desde USD 299 por persona para Punta Cana. ¿Fecha de viaje?</div>
+   144| 144| 144| <div class="msg msg-user">15-18 junio, 2 personas</div>
+   145| 145| 145| <div class="msg msg-bot">¡Perfecto! Te preparo la cotización. Incluye: ✈️ Vuelo + 🏨 Hotel 4★ + 🚐 Traslado. ¿Te envío el PDF?</div>
+   146| 146| 146| <div class="msg msg-user">Sí, por favor</div>
+   147| 147| 147| <div class="msg msg-bot">📎 Cotización_PuntaCana_Jun2026.pdf<br>💡 También puedes verla aquí: aliuntravelsrl.com/cotizacion/abc123</div>
+   148| 148| 148| </div>
+   149| 149| 149| </div>
+   150| 150| 150| </div>
+   151| 151| 151| </div>
+   152| 152| 152| </div>
+   153| 153| 153| </section>
+   154| 154| 154|
+   155| 155| 155| <section id="features">
+   156| 156| 156| <div class="container">
+   157| 157| 157| <h2 class="section-title">Servicios de Viaje <span class="gradient-text">Integrados</span></h2>
+   158| 158| 158| <p class="section-subtitle">Todo lo que necesitas para tu viaje, gestionado desde WhatsApp con respaldo de nuestro equipo experto.</p>
+   159| 159| 159| <div class="features-grid">
+   160| 160| 160| <div class="feature-card">
+   161| 161| 161| <div class="feature-icon">📋</div>
+   162| 162| 162| <h3>Cotizaciones Instantáneas</h3>
+   163| 163| 163| <p>Recibe cotizaciones en PDF con landing page personalizada. Destinos, paquetes y excursiones en segundos.</p>
+   164| 164| 164| </div>
+   165| 165| 165| <div class="feature-card">
+   166| 166| 166| <div class="feature-icon">🏨</div>
+   167| 167| 167| <h3>Reservas Confirmadas</h3>
+   168| 168| 168| <p>Confirma tu reserva directamente por WhatsApp. Recibe voucher electrónico y todos los detalles del viaje.</p>
+   169| 169| 169| </div>
+   170| 170| 170| <div class="feature-card">
+   171| 171| 171| <div class="feature-icon">💳</div>
+   172| 172| 172| <h3>Pagos Seguros</h3>
+   173| 173| 173| <p>Comprobante de depósito vía WhatsApp. Confirmación automática y recibo digital al instante.</p>
+   174| 174| 174| </div>
+   175| 175| 175| <div class="feature-card">
+   176| 176| 176| <div class="feature-icon">🎫</div>
+   177| 177| 177| <h3>Voucher Electrónico</h3>
+   178| 178| 178| <p>Recibe tu voucher de viaje en PDF con código QR. Sin papel, sin espera, directo a tu teléfono.</p>
+   179| 179| 179| </div>
+   180| 180| 180| <div class="feature-card">
+   181| 181| 181| <div class="feature-icon">🌍</div>
+   182| 182| 182| <h3>Destinos Nacionales e Internacionales</h3>
+   183| 183| 183| <p>Punta Cana, Samaná, Puerto Plata y más. También paquetes internacionales a medida.</p>
+   184| 184| 184| </div>
+   185| 185| 185| <div class="feature-card">
+   186| 186| 186| <div class="feature-icon">🛡️</div>
+   187| 187| 187| <h3>Soporte 24/7</h3>
+   188| 188| 188| <p>Asistencia antes, durante y después de tu viaje. Bot inteligente + equipo humano cuando lo necesites.</p>
+   189| 189| 189| </div>
+   190| 190| 190| </div>
+   191| 191| 191| </div>
+   192| 192| 192| </section>
+   193| 193| 193|
+   194| 194| 194| <section id="whatsapp" class="whatsapp-section">
+   195| 195| 195| <div class="container">
+   196| 196| 196| <div class="wa-grid">
+   197| 197| 197| <div>
+   198| 198| 198| <h2 class="section-title">Integración Oficial con <span class="gradient-text">WhatsApp Cloud API</span></h2>
+   199| 199| 199| <p class="section-subtitle">Cumplimos todos los requisitos de Meta para aplicaciones de WhatsApp Business. Seguridad, escalabilidad y conformidad garantizadas.</p>
+   200| 200| 200| <div class="wa-features">
+   201| 201| 201| <div class="wa-feature">
+   202| 202| 202| <h4>☁️ WhatsApp Cloud API</h4>
+   203| 203| 203| <p>Conexión directa con la infraestructura de Meta</p>
+   204| 204| 204| </div>
+   205| 205| 205| <div class="wa-feature">
+   206| 206| 206| <h4>⚡ Respuesta Instantánea</h4>
+   207| 207| 207| <p>Cotizaciones y confirmaciones en segundos</p>
+   208| 208| 208| </div>
+   209| 209| 209| <div class="wa-feature">
+   210| 210| 210| <h4>📊 Panel de Control</h4>
+   211| 211| 211| <p>Métricas de atención y rendimiento en tiempo real</p>
+   212| 212| 212| </div>
+   213| 213| 213| <div class="wa-feature">
+   214| 214| 214| <h4>🔐 Seguridad Enterprise</h4>
+   215| 215| 215| <p>Encriptación y cumplimiento normativo</p>
+   216| 216| 216| </div>
+   217| 217| 217| </div>
+   218| 218| 218| <div class="wa-compliance">
+   219| 219| 219| <div class="icon">✅</div>
+   220| 220| 220| <div>
+   221| 221| 221| <h4>Cumplimiento Meta Completo</h4>
+   222| 222| 222| <p>ALIUN Travel cumple con todos los requisitos de Meta para aplicaciones que utilizan WhatsApp Cloud API, incluyendo políticas de privacidad, términos de servicio, y estándares de seguridad de nivel enterprise. Nuestro Business ID: 566853080395362.</p>
+   223| 223| 223| </div>
+   224| 224| 224| </div>
+   225| 225| 225| </div>
+   226| 226| 226| <div>
+   227| 227| 227| <div class="meta-badges">
+   228| 228| 228| <div class="meta-badge">
+   229| 229| 229| <h4>📋 Documentación Legal</h4>
+   230| 230| 230| <ul>
+   231| 231| 231| <li><span class="check">✓</span> <a href="./privacy.html" style="color:#94a3b8;text-decoration:none">Política de Privacidad</a></li>
+   232| 232| 232| <li><span class="check">✓</span> <a href="./terms.html" style="color:#94a3b8;text-decoration:none">Términos de Servicio</a></li>
+   233| 233| 233| <li><span class="check">✓</span> Información de la Aplicación</li>
+   234| 234| 234| <li><span class="check">✓</span> Cumplimiento de Meta</li>
+   235| 235| 235| </ul>
+   236| 236| 236| </div>
+   237| 237| 237| <div class="meta-badge">
+   238| 238| 238| <h4>📱 Perfil de Aplicación</h4>
+   239| 239| 239| <ul>
+   240| 240| 240| <li><span class="check">✓</span> Resolución: 1024×1024 px</li>
+   241| 241| 241| <li><span class="check">✓</span> Formatos: JPG, PNG</li>
+   242| 242| 242| <li><span class="check">✓</span> Máximo: 5 MB</li>
+   243| 243| 243| <li><span class="check">✓</span> Rango: 512×512 a 1024×1024</li>
+   244| 244| 244| </ul>
+   245| 245| 245| </div>
+   246| 246| 246| </div>
+   247| 247| 247| </div>
+   248| 248| 248| </div>
+   249| 249| 249| </div>
+   250| 250| 250| </section>
+   251| 251| 251|
+   252| 252| 252| <section id="contact" class="cta-section">
+   253| 253| 253| <div class="container">
+   254| 254| 254| <h2>Planifica tu Próximo <span class="gradient-text">Viaje</span></h2>
+   255| 255| 255| <p>Escríbenos por WhatsApp y recibe tu cotización personalizada en minutos. Sin formularios, sin esperas.</p>
+   256| 256| 256| <div class="cta-buttons">
+   257| 257| 257| <a href="https://wa.me/18495833500" class="btn-primary" target="_blank">💬 Escribir por WhatsApp</a>
+   258| 258| 258| <a href="https://aliuntravelsrl.com" class="btn-secondary" target="_blank">🌐 Visitar Web</a>
+   259| 259| 259| </div>
+   260| 260| 260| </div>
+   261| 261| 261| </section>
+   262| 262| 262|
+   263| 263| 263| <footer>
+   264| 264| 264| <div class="container">
+   265| 265| 265| <div class="footer-grid">
+   266| 266| 266| <div class="footer-brand">
+   267| 267| 267| <a href="./" class="logo" style="display:inline-flex">
+   268| 268| 268| <div class="logo-icon">A</div>
+   269| 269| 269| <div class="logo-text">ALIUN Travel</div>
+   270| 270| 270| </a>
+   271| 271| 271| <p>Agencia de viajes dominicana con integración oficial de WhatsApp Cloud API de Meta. Viajes sin fricción.</p>
+   272| 272| 272| </div>
+   273| 273| 273| <div class="footer-col">
+   274| 274| 274| <h4>Servicios</h4>
+   275| 275| 275| <ul>
+   276| 276| 276| <li><a href="#features">Cotizaciones</a></li>
+   277| 277| 277| <li><a href="#features">Reservas</a></li>
+   278| 278| 278| <li><a href="#features">Paquetes</a></li>
+   279| 279| 279| <li><a href="#features">Excursiones</a></li>
+   280| 280| 280| </ul>
+   281| 281| 281| </div>
+   282| 282| 282| <div class="footer-col">
+   283| 283| 283| <h4>Legal</h4>
+   284| 284| 284| <ul>
+   285| 285| 285| <li><a href="./privacy.html">Política de Privacidad</a></li>
+   286| 286| 286| <li><a href="./terms.html">Términos de Servicio</a></li>
+   287| 287| 287| </ul>
+   288| 288| 288| </div>
+   289| 289| 289| <div class="footer-col">
+   290| 290| 290| <h4>Contacto</h4>
+   291| 291| 291| <ul>
+   292| 292| 292| <li><a href="mailto:info@aliuntravelsrl.com">info@aliuntravelsrl.com</a></li>
+   293| 293| 293| <li><a href="https://wa.me/18495833500">WhatsApp: 849-583-3500</a></li>
+   294| 294| 294| <li><a href="tel:+182****8443">Tel: 829-964-8443</a></li>
+   295| 295| 295| </ul>
+   296| 296| 296| </ul>
+   297| 297| 297| </div>
+   298| 298| 298| </div>
+   299| 299| 299| <div class="footer-bottom">
+   300| 300| 300| <p>© 2026 ALIUN Travel SRL. Todos los derechos reservados. </p>
+   301| 301| 301| <div class="footer-social">
+   302| 302| 302| <a href="https://facebook.com/aliuntravelsrl">Facebook</a>
+   303| 303| 303| <a href="https://instagram.com/aliuntravelsrl">Instagram</a>
+   304| 304| 304| </div>
+   305| 305| 305| </div>
+   306| 306| 306| </div>
+   307| 307| 307| </footer>
+   308| 308| 308|</body>
+   309| 309| 309|</html>
+   310| 310| 310|
