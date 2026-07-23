@@ -215,3 +215,61 @@ Con CAPI:
 - Audiencias lookalike de compradores reales
 
 *ATLAS-TECH · 23 Jul 2026 · atlas-api-toolbox/CABLE-MAP-v1.md*
+
+
+---
+
+## ESTADO AL 23 JUL 2026
+
+### CABLE 1 — Meta CAPI + Pixel ← IMPLEMENTADO, PENDIENTE TOKEN
+
+| Componente | Estado | Evidencia |
+|-----------|--------|-----------|
+| Pixel ID | ✅ `4167218546884724` | confirmado por Director |
+| Frontend Pixel | ✅ instalado en producción | commit 8be56eb |
+| Deduplicación event_id | ✅ sellado en cliente | commit 8be56eb |
+| fbclid captura | ✅ cookie + localStorage | commit 8be56eb |
+| dataLayer.push generate_lead | ✅ en HotelBookingForm.jsx | commit 8be56eb |
+| dataLayer.push purchase | ✅ en CheckoutPage.jsx | commit 8be56eb |
+| WF-META-CAPI-v1 | ✅ creado en n8n | ID: oMycQdTpSKsTHBRc |
+| Access Token Meta | ⏳ PENDIENTE DIRECTOR | System User en Business Manager |
+| Activar WF | ⏳ Después del token | n8n → env → META_CAPI_ACCESS_TOKEN |
+
+### Flujo de datos sellado (Antigravity + ATLAS-TECH)
+
+```
+LEAD (cuando el usuario cotiza):
+  SPA Web / Chatwoot
+    → event_id generado: ALIUN-{lead_id}-{random}
+    → Pixel client: fbq('track', 'Lead', data, { eventID })
+    → POST /webhook/meta-capi-event { event_name: 'Lead', event_id, fbclid }
+    → WF-META-CAPI: hash phone/email → graph.facebook.com
+    → Meta deduplica: Pixel + CAPI = 1 evento
+
+PURCHASE (cuando el pago se confirma):
+  Commercial Runtime (deposito_recibido stage)
+    → mismo event_id del lead original
+    → POST /webhook/meta-capi-event { event_name: 'Purchase', event_id, fbclid, precio }
+    → WF-META-CAPI: envía Purchase con fbclid para atribución
+    → Meta sabe qué anuncio generó esa reserva → ROAS real
+```
+
+### Lo único que falta para activar todo
+
+```
+Director → Meta Business Manager → System Users
+  → Generate Token (ads_management + OFFLINE_CONVERSION)
+  → n8n Admin → Variables → META_CAPI_ACCESS_TOKEN = [token]
+  → Activar WF oMycQdTpSKsTHBRc
+```
+
+### CABLE 3 — GA4 + GTM (Antigravity commit 8be56eb)
+
+```
+GA4 Measurement ID: G-VBJQPVHEET ✅ en meta-pixel.js
+GTM Container ID: VITE_GTM_CONTAINER_ID → pendiente Director
+4 eventos GTM: declarados en dataLayer, pendiente configurar tags en GTM consola
+GA4 → Meta Ads: pendiente vincular (5 min en GA4 Admin)
+```
+
+*ATLAS-TECH + Antigravity · 23 Jul 2026*
