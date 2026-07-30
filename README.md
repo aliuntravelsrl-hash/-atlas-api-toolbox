@@ -1,109 +1,25 @@
-# 🔧 ATLAS API TOOLBOX
+# Atlas API Toolbox
+> Tipo: **Infraestructura · SQL Tools · RPCs · Utilities**
 
-> Caja de Herramientas API — Referencia cognitiva oficial de plataformas publicitarias y de negocio para **ALIUN TRAVEL SRL**.
-> Cada GTI (Guía Técnica de Integración) es un documento autocontenido con endpoints, schemas, ejemplos, diagramas ALIUN y checklist.
+## Propósito
+Colección de herramientas SQL, RPCs y utilidades backend compartidas por los agentes del swarm.
 
----
+## Fuente Canónica
+Este repositorio es **infraestructura/código** — no contiene doctrina.
+Toda doctrina, protocolo y especificación vive en:
+→ **[atlas-cos-v1](https://github.com/aliuntravelsrl-hash/atlas-cos-v1)**
 
-## 📊 Inventario de GTIs
+## Consumidores
+Hermes Commercial · Ariadne Data · Hermes Ops
 
-### 01 — META
+## Repos relacionados
+- `atlas-cos-v1` — fuente canónica del COS
+- `atlas-cableados` — rehidratación y knowledge manifests
+- `hermes-commercial` — principal consumer
 
-| GTI | Especs | Postman | Status | Prioridad ALIUN |
-|---|---|---|---|---|
-| [WhatsApp Business API v23.0](01-meta/whatsapp-business-api-v23.0/GTI-WHATSAPP-BUSINESS-API-v23.0.md) | 113 endpoints, 369 schemas | — | ✅ Completo | 🔴 Crítica |
-| [Marketing API (MAPI)](01-meta/marketing-api/GTI-META-MARKETING-API.md) | 995 JSON specs, 47 Postman | 89KB, 10 folders | ✅ Completo | 🔴 Crítica |
-| [Conversions API (CAPI) + Pixel](01-meta/conversions-api/GTI-META-CONVERSIONS-API.md) | CAPI SDK + Param Builder | — | ✅ Completo | 🟡 Alta |
-| [Conversion Leads CRM](01-meta/conversions-api/GTI-META-CONVERSION-LEADS-CRM.md) | Meta CAPI payload specs para CRM | — | ✅ Completo | 🔴 Crítica |
-| ~~Instagram Graph API~~ | — | — | 🔲 Pendiente | 🟡 Media |
-| ~~Messenger API~~ | — | — | 🔲 Pendiente | 🟢 Baja |
-
-### 02 — GOOGLE
-
-| GTI | Specs | MCP Server | Status | Prioridad ALIUN |
-|---|---|---|---|---|
-| [Google Ads API](02-google/google-ads-api/GTI-GOOGLE-ADS-API.md) | Discovery Document + GAQL | ✅ Oficial (530⭐) | ✅ Completo | 🔴 Crítica |
-| ~~Google Analytics API~~ | — | — | 🔲 Pendiente | 🟡 Media |
-| ~~Google Hotel Ads~~ | — | — | 🔲 Pendiente | 🟡 Alta |
-
-### 03 — TIKTOK
-
-| GTI | Specs | MCP Server | Status | Prioridad ALIUN |
-|---|---|---|---|---|
-| [TikTok Marketing API](03-tiktok/tiktok-marketing-api/GTI-TIKTOK-MARKETING-API.md) | Portal docs (no OpenAPI) | — | 🟡 Placeholder | 🟢 Baja |
+## Estado
+`CONVERGENCIA EN PROGRESO` — REPO-MOD-001 Fase 2 (Grupo C)
 
 ---
-
-## 🏗 Estructura del Repo
-
-```
-atlas-api-toolbox/
-├── README.md                              ← ESTE ARCHIVO
-├── sql/                                   
-│   ├── crm-v1.0-migration.sql             ← CRM ALIUN v1.0 (3 tablas + 1 RPC)
-│   └── crm-v1.1-migration.sql             ← CRM ALIUN v1.1 (nueva tabla capi_logs + CAPI RPC)
-│
-├── n8n/
-│   └── conversion-leads-crm-to-meta.json  ← Workflow n8n de automatización CRM -> Meta
-│
-├── deploy/
-│   └── PROMPT-ANTIGRAVITY-CRM-CAPI-DEPLOY.md ← Prompt de despliegue paso a paso
-│
-├── 01-meta/
-│   ├── whatsapp-business-api-v23.0/
-│   │   ├── GTI-WHATSAPP-BUSINESS-API-v23.0.md   ← 113 endpoints, 369 schemas
-│   │   └── spec.yaml                             ← OpenAPI original (1MB)
-│   ├── marketing-api/
-│   │   ├── GTI-META-MARKETING-API.md             ← 995 specs, Postman, flows
-│   │   ├── MAPI-Postman-Collection.json          ← 47 endpoints listos
-│   │   ├── SDKCodegen.json                        ← SDK config
-│   │   └── specs/                                 ← 12 JSON specs clave
-│   ├── conversions-api/
-│   │   ├── GTI-META-CONVERSIONS-API.md           ← CAPI + Pixel + Conversion Leads
-│   │   └── GTI-META-CONVERSION-LEADS-CRM.md      ← Conversion Leads CRM (Especificación CAPI)
-│   ├── pixel-gtm/
-│   │   └── README-Pixel-GTM.md                   ← GTM Template reference
-│   └── conversion-leads/
-│       └── README-Conversion-Leads.md             ← Salesforce APEX reference
-│
-├── 02-google/
-│   ├── google-ads-api/
-│   │   └── GTI-GOOGLE-ADS-API.md                 ← API + MCP Server oficial
-│   └── google-ads-mcp/
-│       ├── README.md                              ← Setup MCP Server
-│       └── pyproject.toml                         ← Dependencies
-│
-└── 03-tiktok/
-    └── tiktok-marketing-api/
-        ├── GTI-TIKTOK-MARKETING-API.md            ← Placeholder (no spec oficial)
-        └── README-REFERENCE.md                     ← Portal docs reference
-```
-
----
-
-## 🔗 Fuentes Oficiales
-
-| Plataforma | Repo Oficial | Specs |
-|---|---|---|
-| Meta OpenAPI | `facebook/openapi` | 1 YAML (WhatsApp) |
-| Meta SDK Codegen | `facebook/facebook-business-sdk-codegen` | 995 JSON specs |
-| Meta CAPI Builder | `facebook/capi-param-builder` | SDK multi-lenguaje |
-| Meta Pixel GTM | `facebook/GoogleTagManager-WebTemplate-For-FacebookPixel` | Template |
-| Meta Conv. Leads | `facebook/Conversion-Leads-Salesforce-APEX` | Reference |
-| Google Ads MCP | `googleads/google-ads-mcp` | MCP Server (530⭐) |
-| Google Ads Asst. | `googleads/google-ads-api-developer-assistant` | LLM Assistant |
-| TikTok Business | `business-api.tiktok.com/portal` | Portal docs only |
-
----
-
-## 📋 Reglas
-
-1. **Solo fuentes oficiales** — No specs inventados ni de terceros
-2. **Un GTI por API** — Formato estándar: info, arquitectura, endpoints, flujo ALIUN, checklist
-3. **Diagrams específicos** — Cada GTI incluye flujo ALIUN: Ad → Lead → CRM → Venta
-4. **Sin credenciales** — NUNCA keys, tokens ni secrets en este repo
-5. **Actualización** — Cuando Meta/Google/TikTok publiquen nuevas specs, actualizar aquí
-
----
-
-*Última actualización: 21 MAY 2026 · Antigravity Agent · ATLAS-API-TOOLBOX-INTEGRATION*
+*Aliun Travel SRL · Director Aldo Hilario · ATLAS-TECH*
+*[atlas-cos-v1](https://github.com/aliuntravelsrl-hash/atlas-cos-v1)*
