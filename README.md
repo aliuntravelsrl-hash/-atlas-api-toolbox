@@ -17,6 +17,9 @@ Hermes Commercial · Ariadne Data · Hermes Ops
 - `atlas-cableados` — rehidratación y knowledge manifests
 - `hermes-commercial` — principal consumer
 
+## Tools
+- `n8n MCP` — integración con el servidor MCP oficial de n8n para descubrimiento, inspección, pruebas y ejecución controlada de workflows. Ver [`tools/n8n-mcp/`](tools/n8n-mcp/).
+
 ## Estado
 `CONVERGENCIA EN PROGRESO` — REPO-MOD-001 Fase 2 (Grupo C)
 
