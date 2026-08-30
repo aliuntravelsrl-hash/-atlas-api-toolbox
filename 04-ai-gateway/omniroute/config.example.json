@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "gateway": {
+    "port": 20128,
+    "host": "0.0.0.0",
+    "requireAuth": true,
+    "compression": {
+      "rtk": true,
+      "caveman": true,
+      "minSavingsThreshold": 0.15
+    }
+  },
+  "combos": {
+    "combo-ventas-realtime": {
+      "description": "Combo de alta disponibilidad y baja latencia para WhatsApp y Chatwoot",
+      "strategy": "lkgp",
+      "targets": [
+        { "provider": "anthropic", "model": "claude-3-5-haiku-20241022", "priority": 1, "timeoutMs": 3500 },
+        { "provider": "openai", "model": "gpt-4o-mini", "priority": 2, "timeoutMs": 3500 },
+        { "provider": "google", "model": "gemini-1.5-flash", "priority": 3, "timeoutMs": 3000 },
+        { "provider": "deepseek", "model": "deepseek-chat", "priority": 4, "timeoutMs": 5000 }
+      ]
+    },
+    "combo-marketing-batch": {
+      "description": "Combo económico de alto volumen para Sentinel, Scribe y n8n",
+      "strategy": "cost-optimized",
+      "targets": [
+        { "provider": "deepseek", "model": "deepseek-chat", "priority": 1 },
+        { "provider": "moonshot", "model": "kimi-k3", "priority": 2 },
+        { "provider": "google", "model": "gemini-1.5-flash", "priority": 3 },
+        { "provider": "openrouter", "model": "auto", "priority": 4 },
+        { "provider": "anthropic", "model": "claude-3-5-sonnet-20241022", "priority": 5, "onlyIfFlagged": true }
+      ]
+    }
+  },
+  "resilience": {
+    "circuitBreaker": {
+      "errorThreshold": 3,
+      "resetTimeoutSec": 30
+    },
+    "rateLimitCooldown": {
+      "honorRetryAfter": true,
+      "defaultCooldownSec": 15
+    }
+  }
+}
