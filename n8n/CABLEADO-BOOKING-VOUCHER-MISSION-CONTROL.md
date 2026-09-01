@@ -17,8 +17,8 @@ Cliente (Web/WA)
 ┌─────────────────────────────────────────────────┐
 │  N8N — Webhook Orquestador                      │
 │  /webhook/aliun-cotizacion                      │
-│  /webhook/wf-registrar-deposito                 │
-│  /webhook/wf-deposito-aprobacion-v1/validate     │
+│  /webhook/registrar-interes                     │
+│  /webhook/validar-comprobante                   │
 │  /webhook/mcp-analisis-financiero               │
 │  /webhook/mcp-generar-post-creativo             │
 └──────────────────────┬──────────────────────────┘
@@ -91,7 +91,7 @@ Cliente (Web/WA)
 4. HTTP Request: Generar landing page HTML
 5. Respond to Webhook: `{ landing_url, pdf_url, id_cotizacion }`
 
-### 1b. `/webhook/wf-registrar-deposito` (Registro de Depósito)
+### 1b. `/webhook/registrar-interes` (Registro de Depósito)
 **Método:** POST  
 **Payload IN:**
 ```json
@@ -112,7 +112,7 @@ Cliente (Web/WA)
 }
 ```
 
-### 1c. `/webhook/wf-deposito-aprobacion-v1/validate` (Validar Comprobante)
+### 1c. `/webhook/validar-comprobante` (Validar Comprobante)
 **Método:** POST  
 **Payload IN:**
 ```json
@@ -142,8 +142,8 @@ Cliente (Web/WA)
 | `calcular_cotizacion` | Supabase directo | Precio dinámico |
 | `calcular_precio_paquete` | Supabase directo | Paquete combinado |
 | `generar_cotizacion_pdf` | `/webhook/aliun-cotizacion` | **LANDING + PDF** |
-| `registrar_deposito` | `/webhook/wf-registrar-deposito` | **VOUCHER TRIGGER** |
-| `validar_comprobante` | `/webhook/wf-deposito-aprobacion-v1/validate` | Approval pipeline |
+| `registrar_deposito` | `/webhook/registrar-interes` | **VOUCHER TRIGGER** |
+| `validar_comprobante` | `/webhook/validar-comprobante` | Approval pipeline |
 | `consultar_reserva` | Supabase directo | Status ALN-XXXXX |
 | `buscar_ofertas_marketing` | Supabase directo | Ofertas activas |
 | `generar_post_creativo` | `/webhook/mcp-generar-post-creativo` | Copies marketing |
